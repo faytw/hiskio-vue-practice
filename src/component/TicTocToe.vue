@@ -30,11 +30,22 @@ export default {
     min-height: 50vh;
     display: inline-block;
     border-right: 2px solid #11cbd7;
-    padding-right: 5px;
+    padding-right: 15px;
 
     .title {
         font-size: 1em;
         margin: 0 auto;
+        position: relative;
+
+        &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 3px;
+            width: 22%;
+            height: 100%;
+            border-bottom: 2px solid #fa4659;
+        }
     }
 }
 .target {
