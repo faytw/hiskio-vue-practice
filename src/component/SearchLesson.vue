@@ -9,19 +9,46 @@
                </li>
             </ol>
         </div>
-        <div class="component"></div>
+        <div class="component">
+            <label for="">搜尋課程</label>
+            <input type="text" v-model="text">
+            <div v-for="(item,index) in lessons" :key="index" class="list-item">
+                <img :src="item.cover" alt="">
+                <div>{{item.title}}</div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import practice from "../data/practice.js";
+
+const SEARCH_API = 'https://hiskio.com/api/v1/courses/search?word=';
+
 export default {
     data(){
         return {
-            practice: practice
+            practice: practice,
+            text: "",
+            lessons: []
         };
     },
-
+    methods:{
+        searchLesson(value){
+            fetch(`${SEARCH_API}${value}`)
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                this.lessons = data.courses;
+            }.bind(this));
+        }
+    },
+    watch:{
+        text(value){
+            this.searchLesson(value);
+        }
+    }
 }
 </script>
 
@@ -61,6 +88,13 @@ export default {
     width: 60%;
     display: inline-block;
     vertical-align: top;
+    padding-left: 15px;
+}
+.list-item {
+    border-top: 30px solid transparent;
+    img {
+        max-width: 120px;
+    }
 }
 </style>
 
