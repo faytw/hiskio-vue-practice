@@ -23,6 +23,8 @@
 <script>
 import practice from "../data/practice.js";
 
+import debounce from "lodash/debounce";
+
 const SEARCH_API = 'https://hiskio.com/api/v1/courses/search?word=';
 
 export default {
@@ -33,6 +35,9 @@ export default {
             lessons: []
         };
     },
+    created(){//已創建完成，data、屬性、方法都可以在這裡被調用
+        this.searchDebounced = debounce(this.searchLesson, 800);
+    },
     methods:{
         searchLesson(value){
             fetch(`${SEARCH_API}${value}`)
@@ -41,12 +46,12 @@ export default {
             })
             .then(function(data){
                 this.lessons = data.courses;
-            }.bind(this));
-        }
+            }.bind(this));//不用箭頭函式這裡要加上bind(this)
+        },
     },
     watch:{
         text(value){
-            this.searchLesson(value);
+            this.searchDebounced(value);
         }
     }
 }
